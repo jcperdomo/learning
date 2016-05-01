@@ -55,4 +55,4 @@ def sampleMixedStrat(mixed):
     :returns: One of the actions a sampled from the mixed strategy argument.
     """
     actions, probs = zip(*mixed)
-    return np.random.choice(actions, size=1, p=probs)
+    return np.random.choice(actions, size=1, p=probs)[0]
