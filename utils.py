@@ -26,7 +26,7 @@ class Game:
 
             # look for utilities
             utilRE = (
-                r'\[(?P<profile>.*?)\].*?'
+                r'\[\s*(?P<profile>.*?)\s*\].*?'
                 r'\[\s*(?P<payoffs>.*?)\s*\]'
             )
             m = re.match(utilRE, line)
@@ -37,6 +37,8 @@ class Game:
                 payoffs = m.group('payoffs')
                 payoffs = tuple(map(float, payoffs.split()))
                 self.utilities[prof] = payoffs
+
+
 
     def numPlayers(self):
         """Returns the number of players in the game."""
@@ -70,15 +72,15 @@ def expectedValue(i, a, S, game, as_cost=False):
     """
     calculates expected value of action a according to other players
     playing strategies s_{-i}
-    
+
     i = id of player under consideration
     a = action played by player i
     S = list of strategy profiles for every player
     game =  game object with utilities method
     as_cost = represent utilities as cost (i.e., negative utility)
-    
-    returns: utility value   
-    
+
+    returns: utility value
+
     """
     action_lists = [xrange(el) for el in game.numActions()]
     action_lists[i] = [a]
@@ -98,7 +100,7 @@ def expectedValue(i, a, S, game, as_cost=False):
                 prob = 1
             else:
                 prob = S[player][prof[player]]
-            p *= prob      
+            p *= prob
         if as_cost:
             val -= game.utility(prof)[i] * p
         else:

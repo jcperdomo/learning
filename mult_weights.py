@@ -2,9 +2,9 @@ import utils
 import itertools
 import numpy as np
 
-matchingPennies = np.array([[(1,-1),(-1,1)], [(-1,1), (1,-1)]])
-t1 = np.array([[(-3,-1),(-3,-1), (-1,-3), (-1,-3)],[(-2,-1),(0,0),(0,0),(-2,-1)]])
-sexes = np.array([[(-2,-1),(0,0)],[(0,0),(-1,-2)]])
+t1 = np.array([
+    [(-3,-1),(-3,-1), (-1,-3), (-1,-3)],
+    [(-2,-1),(0,0),(0,0),(-2,-1)]])
 
 # generate a probability distribution from a vector of weights
 def generateDistribution(weights):
@@ -77,3 +77,12 @@ print no_regrets(bots, 100, .1)
 
 rzs = utils.Game('RandomZeroSum.game')
 print no_regrets(rzs, 100, .1)
+
+rps = utils.Game('RockPaperScissors.game')
+print no_regrets(rps, 100, .1)
+
+chicken = utils.Game('Chicken.game')
+print no_regrets(chicken, 100, .1)
+
+t1 = utils.Game('T1.game')
+print no_regrets(t1, 100, .1)

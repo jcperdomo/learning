@@ -123,3 +123,12 @@ print fictPlay(bots, 1000)
 
 rzs = utils.Game('RandomZeroSum.game')
 print fictPlay(rzs, 1000)
+
+rps = utils.Game('RockPaperScissors.game')
+print fictPlay(rps, 1000)
+
+chicken = utils.Game('Chicken.game')
+print fictPlay(chicken, 1000)
+
+t1 = utils.Game('T1.game')
+print fictPlay(t1, 1000)
