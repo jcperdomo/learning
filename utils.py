@@ -1,3 +1,4 @@
+import itertools
 import re
 import numpy as np
 
@@ -64,3 +65,39 @@ def sampleMixedStrat(mixed):
     """
     actions, probs = zip(*mixed)
     return np.random.choice(actions, size=1, p=probs)[0]
+
+def expectedValue(i, a, S, game):
+    """
+    calculates expected value of action a according to other players
+    playing strategies s_{-i}
+    
+    i = id of player under consideration
+    a = action played by player i
+    S = list of strategy profiles for every player
+    game =  game object with utilities method
+    
+    returns: utility value   
+    
+    """
+    action_lists = [xrange(el) for el in game.numActions()]
+    action_lists[i] = [a]
+    terms = itertools.product(*action_lists)
+    num_players = game.numPlayers()
+    val = 0
+    #print "Player ID ", i
+    #print "Action ", a
+    #print "Strategies ", S
+    #print "Terms ", [el for el in terms]
+
+    for prof in terms:
+        # calculate probability of an action profile
+        p = 1
+        for player in xrange(num_players):
+            if player == i:
+                prob = 1
+            else:
+                prob = S[player][prof[player]]
+            p *= prob      
+        val += game.utility(prof)[i] * p
+    return val
+
