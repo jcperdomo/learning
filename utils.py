@@ -66,7 +66,7 @@ def sampleMixedStrat(mixed):
     actions, probs = zip(*mixed)
     return np.random.choice(actions, size=1, p=probs)[0]
 
-def expectedValue(i, a, S, game):
+def expectedValue(i, a, S, game, as_cost=False):
     """
     calculates expected value of action a according to other players
     playing strategies s_{-i}
@@ -75,6 +75,7 @@ def expectedValue(i, a, S, game):
     a = action played by player i
     S = list of strategy profiles for every player
     game =  game object with utilities method
+    as_cost = represent utilities as cost (i.e., negative utility)
     
     returns: utility value   
     
@@ -98,6 +99,9 @@ def expectedValue(i, a, S, game):
             else:
                 prob = S[player][prof[player]]
             p *= prob      
-        val += game.utility(prof)[i] * p
+        if as_cost:
+            val -= game.utility(prof)[i] * p
+        else:
+            val += game.utility(prof)[i] * p
     return val
 

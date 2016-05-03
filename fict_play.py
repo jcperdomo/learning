@@ -120,3 +120,6 @@ print fictPlay(mp, 1000)
 
 bots = utils.Game('BattleOfTheSexes.game')
 print fictPlay(bots, 1000)
+
+rzs = utils.Game('RandomZeroSum.game')
+print fictPlay(rzs, 1000)

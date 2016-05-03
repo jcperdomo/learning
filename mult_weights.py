@@ -21,7 +21,7 @@ def weightsToStrategies(weights):
 
 
 #RIGHT NOW NOT SURE OF GAME PARAMETER
-def no_regrets(iters, e, game_actions, game):
+def no_regrets(game, iters, e):
     """
     function that computes equilibrium profile for a game using multiplicative
     weights algorithm
@@ -29,12 +29,12 @@ def no_regrets(iters, e, game_actions, game):
     
     iters = number of iterations
     epsilon = epsilon parameter
-    game_actions = list of ints of length equal to the number of players
-                   each entry corresponds to the number of actions for the player
+    game = instance of Game class
 
     returns: mixed strategy profiles for each player
     """
-    num_players = len(game_actions)
+    game_actions = game.numActions()
+    num_players = game.numPlayers()
     # initialize strategies so that all actions have equal weights 
     weights = [ [1 for _ in xrange(size) ] for size in game_actions]
     
@@ -47,7 +47,8 @@ def no_regrets(iters, e, game_actions, game):
             # for each action of every player
             costs = []
             for a in xrange(game_actions[i]):
-                costs.append(utils.expectedValue(i, a, strategies, game))
+                costs.append(utils.expectedValue(i, a, strategies, game,
+                                                 True))
             results.append(costs)
         
         # update weights based on costs
@@ -64,8 +65,15 @@ print generateDistribution([1,1,1])
 print generateDistribution([1,2,0])
         
 print "RESULTS: "
-print no_regrets(100, .1, [2,2], matchingPennies)
 
-print no_regrets(100,.1, [2,4], t1)
+pd = utils.Game('PrisonersDilemma.game')
+print no_regrets(pd, 100, .1)
 
-print no_regrets(100, .1, [2,2], sexes)
+mp = utils.Game('MatchingPennies.game')
+print no_regrets(mp, 100, .1)
+
+bots = utils.Game('BattleOfTheSexes.game')
+print no_regrets(bots, 100, .1)
+
+rzs = utils.Game('RandomZeroSum.game')
+print no_regrets(rzs, 100, .1)
