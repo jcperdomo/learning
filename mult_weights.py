@@ -56,33 +56,5 @@ def no_regrets(game, iters, e):
             for j in xrange(game_actions[i]):
                 weights[i][j] = weights[i][j] * (1 - e) ** results[i][j]
                                 
-    return weightsToStrategies(weights)
-
-
-#TESTS
-
-print generateDistribution([1,1,1])
-print generateDistribution([1,2,0])
-        
-print "RESULTS: "
-
-pd = utils.Game('PrisonersDilemma.game')
-print no_regrets(pd, 100, .1)
-
-mp = utils.Game('MatchingPennies.game')
-print no_regrets(mp, 100, .1)
-
-bots = utils.Game('BattleOfTheSexes.game')
-print no_regrets(bots, 100, .1)
-
-rzs = utils.Game('RandomZeroSum.game')
-print no_regrets(rzs, 100, .1)
-
-rps = utils.Game('RockPaperScissors.game')
-print no_regrets(rps, 100, .1)
-
-chicken = utils.Game('Chicken.game')
-print no_regrets(chicken, 100, .1)
-
-t1 = utils.Game('T1.game')
-print no_regrets(t1, 100, .1)
+    finalStrats = weightsToStrategies(weights)
+    return finalStrats

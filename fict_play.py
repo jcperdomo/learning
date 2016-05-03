@@ -17,45 +17,6 @@ def getMixedStrat(hist):
     ret = [x/float(tot) for x in ret]
     return ret
 
-def getConstraint(game, player, a1, a2, other_profs, mix_strats):
-    """Figures out the constraint needed for the best-response LP.
-
-    :game: The utils.Game object representing the game.
-    :player: The index of the player for which we're computing a BR.
-    :a1: The action we're considering.
-    :a2: The action we're comparing it to.
-    :other_profs: The set of opponent action profiles (A_-i).
-    :mix_strats: The mixed strategies implied by each player's history.
-    :returns: A row to be added to the matrix on the LHS of the LP and the
-    value for the RHS.
-    """
-
-    def computeCoef(game, player, a, other_profs, mix_strats):
-        coef = 0
-        for o_prof in other_profs:
-
-            # get full action profile and player's utility
-            a_prof = list(o_prof)
-            a_prof.insert(player, a)
-            util = game.utility(a_prof)[player]
-
-            # find probability of o_prof (a_-i)
-            o_prof_prob = np.prod(float(mix_strats[p][act])
-                                  for p, act in enumerate(a_prof) if p != player)
-            o_prof_prob = list(o_prof_prob)[0]
-
-            coef += util * o_prof_prob
-        return coef
-
-    a1coef = computeCoef(game, player, a1, other_profs, mix_strats)
-    a2coef = computeCoef(game, player, a2, other_profs, mix_strats)
-
-    row = [0 for _ in xrange(game.numActions()[player])]
-    row[a2] = a2coef
-    row[a1] = -a1coef
-
-    return row, 0
-
 def findBestResponse(game, player, mix_strats):
     """Finds a best response to a profile of opponent mixed strategies.
 
@@ -110,25 +71,4 @@ def fictPlay(game, iters):
         actions = [findBestResponse(game, player, mix_strats)
                    for player in xrange(game.numPlayers())]
 
-    return [dict(enumerate(getMixedStrat(hist))) for hist in history]
-
-pd = utils.Game('PrisonersDilemma.game')
-print fictPlay(pd, 1000)
-
-mp = utils.Game('MatchingPennies.game')
-print fictPlay(mp, 1000)
-
-bots = utils.Game('BattleOfTheSexes.game')
-print fictPlay(bots, 1000)
-
-rzs = utils.Game('RandomZeroSum.game')
-print fictPlay(rzs, 1000)
-
-rps = utils.Game('RockPaperScissors.game')
-print fictPlay(rps, 1000)
-
-chicken = utils.Game('Chicken.game')
-print fictPlay(chicken, 1000)
-
-t1 = utils.Game('T1.game')
-print fictPlay(t1, 1000)
+    return [getMixedStrat(hist) for hist in history]
