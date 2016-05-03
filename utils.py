@@ -31,12 +31,20 @@ class Game:
             m = re.match(utilRE, line)
             if m:
                 prof = m.group('profile')
-                prof = tuple(map(int, prof.split()))
+                prof = map(int, prof.split())
+                prof = tuple(map(lambda x: x-1, prof)) # make 0-indexed
                 payoffs = m.group('payoffs')
                 payoffs = tuple(map(float, payoffs.split()))
                 self.utilities[prof] = payoffs
 
+    def numPlayers(self):
+        """Returns the number of players in the game."""
+        return self.nplayers
 
+    def numActions(self):
+        """Returns a list where the ith entry is the number of actions for
+        agent i."""
+        return self.nactions
 
     def utility(self, actions):
         """Returns utilities given an action profile.
